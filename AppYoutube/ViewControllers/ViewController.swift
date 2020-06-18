@@ -9,44 +9,64 @@
 import UIKit
 
 class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,ModelDelegate {
-   
+    
     @IBOutlet weak var tableView: UITableView!
     
     
     var model = Model()
     var videos = [Video]() 
-   
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Sets the navigation title with text and image
+       
+//        let image : UIImage = UIImage(named: "ketnet")!
+//           let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
+//           imageView.contentMode = .scaleAspectFit
+//           imageView.image = image
+//           navigationItem.titleView = imageView
+//        imageView.contentMode = .scaleAspectFit
         // set itself as the delegate and datasourse
         tableView.delegate = self
         tableView.dataSource = self
         // set itse as the delegate  of the model
         model.delegate = self
+        // Create MenuBAr
+       //setupMenuBar()
         
-       
         //fetchdata()
-       
+        
         //print(model.getVideos().self)
         let label = UILabel(frame: CGRect(x: 30, y: 100, width: 200, height: 21))
         label.textAlignment = NSTextAlignment.center
-         self.view.addSubview(label)
+        self.view.addSubview(label)
         
         model.getVideos()
         
     }
+    let menuBar: MenuBar = {
+        let mb =  MenuBar()
+        return mb
+    }()
+    
+    private func setupMenuBar (){
+        view.addSubview(menuBar)
+        NSLayoutConstraint.activate([menuBar.topAnchor.constraint(equalTo: view.topAnchor, constant: 50), menuBar.leadingAnchor.constraint(equalTo: view.leadingAnchor), menuBar.trailingAnchor.constraint(equalTo: view.trailingAnchor), menuBar.heightAnchor.constraint(equalToConstant: 50)])
+      //  view.addConstraints(horizontalConstraints)
+        
+    }
     
     func videosFetched(_ videos: [Video]) {
-           
-               // set the Fetched videos to our property
-               self.videos = videos
-               tableView.reloadData()
-          
-       }
+        
+        // set the Fetched videos to our property
+        self.videos = videos
+        tableView.reloadData()
+        
+    }
     
-   
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         videos.count
@@ -57,10 +77,10 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //configure the cell with the data
         
         //let title = self.videos[indexPath.row].title
-       // cell.textLabel?.text = title
+        // cell.textLabel?.text = title
         let video = self.videos[indexPath.row]
         cell?.setCell(video)
-       // cell.t?.text = "okokoko"
+        // cell.t?.text = "okokoko"
         return cell!
     }
     
@@ -69,24 +89,24 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-           
-           // Confirm that a video was selected
-           guard tableView.indexPathForSelectedRow != nil else {
-               return
-           }
-           
-           // Get a reference to the video that was tapped on
-           let selectedVideo = videos[tableView.indexPathForSelectedRow!.row]
-           
-           // Get a reference to the detail view controller
-           let detailVC = segue.destination as! DetailsUIViewController
-           
-           // Set the video property of the detail view controller
-           detailVC.video = selectedVideo
-       }
+        
+        // Confirm that a video was selected
+        guard tableView.indexPathForSelectedRow != nil else {
+            return
+        }
+        
+        // Get a reference to the video that was tapped on
+        let selectedVideo = videos[tableView.indexPathForSelectedRow!.row]
+        
+        // Get a reference to the detail view controller
+        let detailVC = segue.destination as! DetailsUIViewController
+        
+        // Set the video property of the detail view controller
+        detailVC.video = selectedVideo
+    }
 }
-    
-    
+
+
 //    func fetchdata(){
 //
 //        let url = URL(string: Constants.API_URL)
@@ -130,8 +150,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
 //    }
 //
 //
-    
+
 
 //if let route = try?  container.decode(CountryData.self) {
-  //  countries.append(route)
+//  countries.append(route)
 //}
